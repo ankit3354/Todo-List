@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function Filter({ setMessageBody, messagebody }) {
+  
   // messagebody=[]
   const [option, setOption] = useState("ALL");
 
@@ -11,7 +12,6 @@ function Filter({ setMessageBody, messagebody }) {
 
   const handleSortTodo = (value) => {
     let filterMessages = [];
-
     if (value === "ALL") {
       filterMessages = messagebody;
     } else if (value === "Not Completed") {
@@ -19,7 +19,6 @@ function Filter({ setMessageBody, messagebody }) {
     } else if (value === "Completed") {
       filterMessages = messagebody.filter((message) => message.toggled);
     }
-
     setMessageBody(filterMessages);
   };
 
@@ -28,7 +27,6 @@ function Filter({ setMessageBody, messagebody }) {
       <div>
         <select
           onChange={(e) => {
-            setOption(e.target.value);
             handleSortTodo(e.target.value);
           }}
           value={option}
