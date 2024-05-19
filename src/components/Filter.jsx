@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from "react";
+import {
+  databases,
+  DATABASES_ID,
+  COLLECTION_MESSAGE_ID,
+} from "../appwriteConfig";
+import { Query } from "appwrite";
 
-function Filter({ setMessageBody, messagebody }) {
-  
-  // messagebody=[]
+function Filter({ setMessageBody }) {
   const [option, setOption] = useState("ALL");
+  const [allMessages, setAllMessages] = useState([]); // To store all messages
 
-  // Update the messagebody state when props change
   useEffect(() => {
-    setMessageBody(messagebody);
-  }, [messagebody, setMessageBody]);
+    getMessages();
+  }, []);
+
+  const getMessages = async () => {
+    const response = await databases.listDocuments(
+      DATABASES_ID,
+      COLLECTION_MESSAGE_ID,
+      [Query.orderDesc("$createdAt")]
+    );
+    console.log("Response : ", response);
+    setAllMessages(response.documents); // Store all messages initially
+    setMessageBody(response.documents);
+  };
 
   const handleSortTodo = (value) => {
+    setOption(value);
     let filterMessages = [];
     if (value === "ALL") {
-      filterMessages = messagebody;
+      filterMessages = allMessages;
     } else if (value === "Not Completed") {
-      filterMessages = messagebody.filter((message) => !message.toggled);
+      console.log("Not Completed is ", value);
+      filterMessages = allMessages.filter((message) => !message.toggled);
     } else if (value === "Completed") {
-      filterMessages = messagebody.filter((message) => message.toggled);
+      console.log("Completed is ", value);
+      filterMessages = allMessages.filter((message) => message.toggled);
     }
     setMessageBody(filterMessages);
   };
