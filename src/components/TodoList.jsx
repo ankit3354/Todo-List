@@ -31,7 +31,8 @@ function TodoList() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let payload = { body: message, toggled: toggled };
+    let payload = { body: message, toggled: false };
+
     const response = await databases.createDocument(
       DATABASES_ID,
       COLLECTION_MESSAGE_ID,
@@ -129,7 +130,7 @@ function TodoList() {
                       onClick={() => hanldeToggle(message.$id, message.toggled)}
                       className={`${
                         message.toggled ? "line-through " : ""
-                      } cursor-pointer font-semibold text-[18px]`}
+                      } cursor-pointer font-semibold text-[15px]`}
                     >
                       {message.body}
                     </p>
